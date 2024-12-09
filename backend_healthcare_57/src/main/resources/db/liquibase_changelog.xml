@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <property name="schemaName" value="healthcare"></property>
+    <property name="author=" value="db-designer"></property>
+    <changeSet id="v1-01-01" author="${author}">
+    
+ <createTable schemaName="${schemaName}" tableName="Appointment">
+	<column name="AppointmentID" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="Date" type="TIMESTAMP" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Patient">
+	<column name="PatientID" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="PatientName" type="VARCHAR(250)" />
+    
+     <column name="PatientAge" type="INTEGER" />
+    
+     <column name="ContactInfo" type="INTEGER" />
+    
+     <column name="Dob" type="TIMESTAMP" />
+    
+ 	
+</createTable>
+ <createTable schemaName="${schemaName}" tableName="Doctor">
+	<column name="DoctorID" type="SERIAL" autoIncrement="true" >
+        <constraints nullable="false" primaryKey="true"/>
+    </column>
+     <column name="DoctorName" type="VARCHAR(250)" />
+    
+     <column name="Specialization" type="VARCHAR(250)" />
+    
+ 	
+</createTable>
+	
+  <createTable schemaName="${schemaName}" tableName="PatientAppointment">
+	<column name="Id" type="SERIAL" autoIncrement="true">
+		<constraints primaryKey="true" nullable="false"/>
+	</column>
+	<column name="PatientID" type="INTEGER" />
+	<column name="AppointmentID" type="INTEGER" />
+</createTable>
+
+ 
+	<addForeignKeyConstraint baseTableName="PatientAppointment" baseTableSchemaName="${schemaName}"  baseColumnNames="PatientID" constraintName="Appointment_PatientID_fk"
+	                                  referencedTableName="Patient" referencedTableSchemaName="${schemaName}" referencedColumnNames="PatientID"/>
+	                                  
+	<addForeignKeyConstraint baseTableName="PatientAppointment" baseTableSchemaName="${schemaName}"  baseColumnNames="AppointmentID" constraintName="Appointment_AppointmentID_fk"
+	                                  referencedTableName="Appointment" referencedTableSchemaName="${schemaName}" referencedColumnNames="AppointmentID"/>
+ 
+	
+ 
+	<addColumn tableName="Appointment" schemaName="${schemaName}">
+	    <column name="AppointmentDoctor" type="INTEGER"/>
+	</addColumn>
+	<addForeignKeyConstraint baseTableName="Appointment" baseColumnNames="AppointmentDoctor" baseTableSchemaName="${schemaName}" constraintName="Appointment_Doctor_fk" referencedTableName="Doctor"
+	                                 referencedColumnNames="DoctorID" referencedTableSchemaName="${schemaName}"/>
+ 
+  	    </changeSet>
+</databaseChangeLog>
